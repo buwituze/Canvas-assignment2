@@ -19,6 +19,8 @@ function getUniqueFilename(prefix = 'result') {
 
 async function main() {
     try {
+        // Ask the user for the operations
+        // and the paths to the input files the user wants to work on
         console.log('Please provide the paths to the input files containing two matrices.');
         const operation = (await askQuestion('Enter the operation (add, subtract, multiply): ')).toLowerCase();
         let filePath1 = await askQuestion('Enter the path for the first input file: ');
@@ -35,6 +37,7 @@ async function main() {
             throw new Error(`File not found: ${filePath2}`);
         }
 
+        // Load and operate on the matrices according to the users input operation
         const matrix1 = new SparseMatrix(filePath1);
         const matrix2 = new SparseMatrix(filePath2);
 
@@ -55,6 +58,8 @@ async function main() {
         if (!fs.existsSync(outputDirectory)) {
             fs.mkdirSync(outputDirectory); // Create the directory if it doesn't exist
         }
+
+        //Write the resultant matrix to a file
 
         const outputFile = path.join(outputDirectory, getUniqueFilename('result'));
         const writeStream = fs.createWriteStream(outputFile);
