@@ -74,7 +74,6 @@ class SparseMatrix {
         
         return result;
     }
-    
 
     subtract(other) {
         if (this.numRows !== other.numRows || this.numCols !== other.numCols) {
@@ -111,8 +110,6 @@ class SparseMatrix {
     }
 
     print() {
-
-        // Print the resultant matrix
         console.log(`rows=${this.numRows}`);
         console.log(`cols=${this.numCols}`);
         for (let key in this.data) {

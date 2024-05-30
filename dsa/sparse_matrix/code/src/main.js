@@ -12,32 +12,31 @@ function askQuestion(query) {
     return new Promise(resolve => rl.question(query, resolve));
 }
 
+function getUniqueFilename(prefix = 'result') {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    return `${prefix}-${timestamp}.txt`;
+}
+
 async function main() {
-    // try and catch errors to maximize smooth operation of the codes!
-
     try {
-        
-        // Ask the user for instruction on preffered operation 
-        //and the files they wan to work with
-
-        console.log('Please provide the paths to the matrix files relative to the current directory or as absolute paths.');
+        console.log('Please provide the paths to the input files containing two matrices.');
         const operation = (await askQuestion('Enter the operation (add, subtract, multiply): ')).toLowerCase();
-        let file1 = await askQuestion('Enter the path for the first matrix file: ');
-        let file2 = await askQuestion('Enter the path for the second matrix file: ');
+        let filePath1 = await askQuestion('Enter the path for the first input file: ');
+        let filePath2 = await askQuestion('Enter the path for the second input file: ');
 
-        // normalize paths
-        file1 = path.resolve(file1.trim());
-        file2 = path.resolve(file2.trim());
+        // Normalize paths
+        filePath1 = path.resolve(filePath1.trim());
+        filePath2 = path.resolve(filePath2.trim());
 
-        if (!fs.existsSync(file1)) {
-            throw new Error(`File not found: ${file1}`);
+        if (!fs.existsSync(filePath1)) {
+            throw new Error(`File not found: ${filePath1}`);
         }
-        if (!fs.existsSync(file2)) {
-            throw new Error(`File not found: ${file2}`);
+        if (!fs.existsSync(filePath2)) {
+            throw new Error(`File not found: ${filePath2}`);
         }
 
-        const matrix1 = new SparseMatrix(file1);
-        const matrix2 = new SparseMatrix(file2);
+        const matrix1 = new SparseMatrix(filePath1);
+        const matrix2 = new SparseMatrix(filePath2);
 
         let result;
         if (operation === 'add') {
@@ -52,13 +51,12 @@ async function main() {
 
         result.print();
 
-        const outputDirectory = path.join(__dirname, '..', 'sample_results'); // path to sample_results folder
+        const outputDirectory = path.join(__dirname, '..', 'sample_results'); // Path to sample_results folder
         if (!fs.existsSync(outputDirectory)) {
-            fs.mkdirSync(outputDirectory); // create the directory if it doesn't exist
+            fs.mkdirSync(outputDirectory); // Create the directory if it doesn't exist
         }
-        
-        // Write the result to a file
-        const outputFile = path.join(outputDirectory, 'result.txt');
+
+        const outputFile = path.join(outputDirectory, getUniqueFilename('result'));
         const writeStream = fs.createWriteStream(outputFile);
         writeStream.write(`rows=${result.numRows}\n`);
         writeStream.write(`cols=${result.numCols}\n`);
