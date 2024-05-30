@@ -13,8 +13,10 @@ function askQuestion(query) {
 }
 
 async function main() {
-    // try and catch errors to maximize smooth operation
+    // try and catch errors to maximize smooth operation of the codes!
+
     try {
+        
         // Ask the user for instruction on preffered operation 
         //and the files they wan to work with
 
