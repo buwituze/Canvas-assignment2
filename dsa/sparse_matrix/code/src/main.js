@@ -13,13 +13,17 @@ function askQuestion(query) {
 }
 
 async function main() {
+    // try and catch errors to maximize smooth operation
     try {
+        // Ask the user for instruction on preffered operation 
+        //and the files they wan to work with
+
         console.log('Please provide the paths to the matrix files relative to the current directory or as absolute paths.');
         const operation = (await askQuestion('Enter the operation (add, subtract, multiply): ')).toLowerCase();
         let file1 = await askQuestion('Enter the path for the first matrix file: ');
         let file2 = await askQuestion('Enter the path for the second matrix file: ');
 
-        // Normalize paths
+        // normalize paths
         file1 = path.resolve(file1.trim());
         file2 = path.resolve(file2.trim());
 
@@ -46,11 +50,12 @@ async function main() {
 
         result.print();
 
-        const outputDirectory = path.join(__dirname, '..', 'sample_results'); // Path to sample_results folder
+        const outputDirectory = path.join(__dirname, '..', 'sample_results'); // path to sample_results folder
         if (!fs.existsSync(outputDirectory)) {
-            fs.mkdirSync(outputDirectory); // Create the directory if it doesn't exist
+            fs.mkdirSync(outputDirectory); // create the directory if it doesn't exist
         }
         
+        // Write the result to a file
         const outputFile = path.join(outputDirectory, 'result.txt');
         const writeStream = fs.createWriteStream(outputFile);
         writeStream.write(`rows=${result.numRows}\n`);

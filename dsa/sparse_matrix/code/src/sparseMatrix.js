@@ -60,13 +60,13 @@ class SparseMatrix {
         
         const result = new SparseMatrix(null, this.numRows, this.numCols);
         
-        // Add elements from the first matrix
+        // Add operands from the 1st matrices
         for (let key in this.data) {
             const [row, col] = key.split(',').map(Number);
             result.setElement(row, col, result.getElement(row, col) + this.data[key]);
         }
         
-        // Add elements from the second matrix
+        // Add operands from the 2nd matrices
         for (let key in other.data) {
             const [row, col] = key.split(',').map(Number);
             result.setElement(row, col, result.getElement(row, col) + other.data[key]);
@@ -92,6 +92,7 @@ class SparseMatrix {
     }
 
     multiply(other) {
+        // multiply operands from the 2 matrices
         if (this.numCols !== other.numRows) {
             throw new Error('Number of columns of the first matrix must equal the number of rows of the second matrix');
         }
@@ -110,6 +111,8 @@ class SparseMatrix {
     }
 
     print() {
+
+        // Print the resultant matrix
         console.log(`rows=${this.numRows}`);
         console.log(`cols=${this.numCols}`);
         for (let key in this.data) {
